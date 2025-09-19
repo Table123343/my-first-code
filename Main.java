@@ -6,6 +6,7 @@
 import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 public class Main {
 
     public static final double PRICE_SOURPATCH = 1.25;
@@ -18,7 +19,6 @@ public class Main {
 
         System.out.println("Welcome to John's Store!");
 
-        // Adjusted item names to match variable meaning
         System.out.print("Enter quantity of Sour Patch Kids: ");
         int qtySourpatch = scanner.nextInt();
 
@@ -28,19 +28,32 @@ public class Main {
         System.out.print("Enter pounds of Chocolate: ");
         double lbsChocolate = scanner.nextDouble();
 
-        // Corrected variable names (case-sensitive)
         double costSourpatch = qtySourpatch * PRICE_SOURPATCH;
         double costSwedishfish = qtySwedishfish * PRICE_SWEDISHFISH;
         double costChocolate = lbsChocolate * PRICE_CHOCOLATE_PER_LB;
 
         double subtotal = costSourpatch + costSwedishfish + costChocolate;
+
         double tax = subtotal * SALES_TAX_RATE;
-        double total = subtotal + tax;
+        double totalBeforeDiscount = subtotal + tax;
+
+        // Apply discount after tax
+        double discountRate = 0.0;
+        if (totalBeforeDiscount >= 50) {
+            discountRate = 0.20;  // 20% discount
+        } else if (totalBeforeDiscount >= 30) {
+            discountRate = 0.10;  // 10% discount
+        }
+
+        double discountAmount = totalBeforeDiscount * discountRate;
+        double totalAfterDiscount = totalBeforeDiscount - discountAmount;
 
         // Rounding to 2 decimal places
         subtotal = Math.round(subtotal * 100.0) / 100.0;
         tax = Math.round(tax * 100.0) / 100.0;
-        total = Math.round(total * 100.0) / 100.0;
+        totalBeforeDiscount = Math.round(totalBeforeDiscount * 100.0) / 100.0;
+        discountAmount = Math.round(discountAmount * 100.0) / 100.0;
+        totalAfterDiscount = Math.round(totalAfterDiscount * 100.0) / 100.0;
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
@@ -52,7 +65,6 @@ public class Main {
         System.out.println("       Rewards Points: 150          ");
         System.out.println("===================================");
 
-        // Proper labels and values
         System.out.printf("Sour Patch Kids: %d x $%.2f = $%.2f%n", qtySourpatch, PRICE_SOURPATCH, costSourpatch);
         System.out.printf("Swedish Fish:    %d x $%.2f = $%.2f%n", qtySwedishfish, PRICE_SWEDISHFISH, costSwedishfish);
         System.out.printf("Chocolate:       %.2f lbs x $%.2f = $%.2f%n", lbsChocolate, PRICE_CHOCOLATE_PER_LB, costChocolate);
@@ -60,10 +72,15 @@ public class Main {
         System.out.println("-----------------------------------");
         System.out.printf("Subtotal:               $%.2f%n", subtotal);
         System.out.printf("Sales Tax (5.999%%):     $%.2f%n", tax);
-        System.out.printf("Total:                  $%.2f%n", total);
+        System.out.printf("Total before discount:  $%.2f%n", totalBeforeDiscount);
+
+        if (discountRate > 0) {
+            System.out.printf("Discount (%.0f%%):         -$%.2f%n", discountRate * 100, discountAmount);
+        }
+
+        System.out.printf("Total after discount:   $%.2f%n", totalAfterDiscount);
         System.out.println("===================================");
         System.out.println("Thank you for shopping with us!");
 
         scanner.close();
     }
-}
