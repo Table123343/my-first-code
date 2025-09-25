@@ -39,9 +39,9 @@ public class Main {
 
         // Apply discount after tax
         double discountRate = 0.0;
-       if (totalBeforeDiscount >= 50 && totalBeforeDiscount >= 30) {
+       if (totalBeforeDiscount >= 45 && totalBeforeDiscount >= 25) {
     discountRate = 0.20;  // 20% discount
-     } else if (totalBeforeDiscount >= 30) {
+     } else if (totalBeforeDiscount >= 25) {
     discountRate = 0.10;  // 10% discount
      }
 
@@ -86,5 +86,3 @@ public class Main {
         scanner.close();
     }
 }
-
-
