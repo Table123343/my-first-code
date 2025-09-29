@@ -26,7 +26,7 @@ public class Main {
         // ----------------------------
 
         // (1) Letter grade
-        System.out.print("\nEnter test score (0–100): ");
+        System.out.print("Enter test score (0–100): ");
         int testScore = sc.nextInt();
 
         if (testScore < 0 || testScore > 100) {
@@ -44,7 +44,7 @@ public class Main {
         }
 
         // (2) FizzBuzz
-        System.out.print("\nEnter n: ");
+        System.out.print("Enter n: ");
         int n = sc.nextInt();
 
         if (n % 3 == 0 && n % 5 == 0) {
@@ -58,7 +58,7 @@ public class Main {
         }
 
         // (3) Range check
-        System.out.print("\nEnter x: ");
+        System.out.print("Enter x: ");
         int x = sc.nextInt();
         if (x > 1 && x < 3) {
             System.out.println("over here");
@@ -77,14 +77,14 @@ public class Main {
         }
         System.out.println("Sum: " + sum); // should be 137
 
-        sc.nextLine(); // clear input buffer before moving to strings
+        sc.nextLine(); // clear input buffer
 
         // ----------------------------
         // Part 4: Strings
         // ----------------------------
 
         // (1) Login check
-        System.out.print("\nEnter username: ");
+        System.out.print("Enter username: ");
         String user = sc.nextLine();
         System.out.print("Enter password: ");
         String pass = sc.nextLine();
@@ -96,7 +96,7 @@ public class Main {
         }
 
         // (2) Capitalize word
-        System.out.print("\nEnter a word: ");
+        System.out.print("Enter a word: ");
         String word = sc.nextLine();
         if (word.length() > 0) {
             String capitalized = word.substring(0, 1).toUpperCase() +
@@ -105,7 +105,7 @@ public class Main {
         }
 
         // (3) Contains word
-        System.out.print("\nEnter a sentence: ");
+        System.out.print("Enter a sentence: ");
         String sentence = sc.nextLine();
         System.out.print("Enter a target word: ");
         String target = sc.nextLine();
