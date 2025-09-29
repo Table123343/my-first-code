@@ -1,0 +1,125 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // ----------------------------
+        // Part 2: Warm-up (Variables & Expressions)
+        // ----------------------------
+        int days = 7;
+        double price = 19.99;
+        boolean isMember = true;
+        String course = "CS103";
+
+        System.out.println(days);
+        System.out.println(price);
+        System.out.println(isMember);
+        System.out.println(course);
+
+        // Add tax (7.5%)
+        price = price * 1.075;
+        System.out.println("Total: " + price);
+
+        // ----------------------------
+        // Part 3: Conditionals
+        // ----------------------------
+
+        // (1) Letter grade
+        System.out.print("\nEnter test score (0–100): ");
+        int testScore = sc.nextInt();
+
+        if (testScore < 0 || testScore > 100) {
+            System.out.println("Invalid score");
+        } else if (testScore >= 90) {
+            System.out.println("A");
+        } else if (testScore >= 80) {
+            System.out.println("B");
+        } else if (testScore >= 70) {
+            System.out.println("C");
+        } else if (testScore >= 60) {
+            System.out.println("D");
+        } else {
+            System.out.println("F");
+        }
+
+        // (2) FizzBuzz
+        System.out.print("\nEnter n: ");
+        int n = sc.nextInt();
+
+        if (n % 3 == 0 && n % 5 == 0) {
+            System.out.println("FizzBuzz");
+        } else if (n % 3 == 0) {
+            System.out.println("Fizz");
+        } else if (n % 5 == 0) {
+            System.out.println("Buzz");
+        } else {
+            System.out.println(n);
+        }
+
+        // (3) Range check
+        System.out.print("\nEnter x: ");
+        int x = sc.nextInt();
+        if (x > 1 && x < 3) {
+            System.out.println("over here");
+        } else if (x <= 3) {
+            System.out.println("too small");
+        } else {
+            System.out.println("too big");
+        }
+
+        // (4) Divisible by 2 or 3 sum
+        int sum = 0;
+        for (int i = 2; i <= 20; i++) {
+            if (i % 2 == 0 || i % 3 == 0) {
+                sum += i;
+            }
+        }
+        System.out.println("Sum: " + sum); // should be 137
+
+        sc.nextLine(); // clear input buffer before moving to strings
+
+        // ----------------------------
+        // Part 4: Strings
+        // ----------------------------
+
+        // (1) Login check
+        System.out.print("\nEnter username: ");
+        String user = sc.nextLine();
+        System.out.print("Enter password: ");
+        String pass = sc.nextLine();
+
+        if (user.equals("admin") && pass.equals("secret")) {
+            System.out.println("Welcome");
+        } else {
+            System.out.println("Access denied");
+        }
+
+        // (2) Capitalize word
+        System.out.print("\nEnter a word: ");
+        String word = sc.nextLine();
+        if (word.length() > 0) {
+            String capitalized = word.substring(0, 1).toUpperCase() +
+                                word.substring(1).toLowerCase();
+            System.out.println("Capitalized: " + capitalized);
+        }
+
+        // (3) Contains word
+        System.out.print("\nEnter a sentence: ");
+        String sentence = sc.nextLine();
+        System.out.print("Enter a target word: ");
+        String target = sc.nextLine();
+
+        String[] words = sentence.split(" ");
+        boolean found = false;
+        for (String w : words) {
+            if (w.equalsIgnoreCase(target)) {
+                found = true;
+                break;
+            }
+        }
+        System.out.println("Contains word? " + found);
+
+        sc.close();
+    }
+}
