@@ -4,9 +4,9 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // ----------------------------
+
         // Part 2: Warm-up (Variables & Expressions)
-        // ----------------------------
+
         int days = 7;
         double price = 19.99;
         boolean isMember = true;
@@ -21,9 +21,9 @@ public class Main {
         price = price * 1.075;
         System.out.println("Total: " + price);
 
-        // ----------------------------
+     
         // Part 3: Conditionals
-        // ----------------------------
+        
 
         // (1) Letter grade
         System.out.print("Enter test score (0–100): ");
@@ -60,12 +60,12 @@ public class Main {
         // (3) Range check
         System.out.print("Enter x: ");
         int x = sc.nextInt();
-        if (x > 1 && x < 3) {
+        if (x < 10 && x > 3) {
             System.out.println("over here");
         } else if (x <= 3) {
             System.out.println("too small");
         } else {
-            System.out.println("too big");
+            System.out.println("too big"); 
         }
 
         // (4) Divisible by 2 or 3 sum
