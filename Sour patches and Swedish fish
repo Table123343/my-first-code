@@ -1,0 +1,112 @@
+import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class Main {
+
+    public static final double PRICE_SOURPATCH = 1.25;
+    public static final double PRICE_SWEDISHFISH = 1.29;
+    public static final double PRICE_CHOCOLATE_PER_LB = 5.49;
+    public static final double SALES_TAX_RATE = 0.05999;  // 5.999%
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to John's Store!");
+
+        // --- While Loop: Input Validation for Swedish Fish ---
+        int qtySwedishfish = -1;
+        while (qtySwedishfish < 0) {
+            System.out.print("Enter quantity of Swedish Fish (0 or more): ");
+            if (scanner.hasNextInt()) {
+                qtySwedishfish = scanner.nextInt();
+                if (qtySwedishfish < 0) {
+                    System.out.println("Quantity cannot be negative. Try again.");
+                }
+            } else {
+                System.out.println("Please enter a whole number.");
+                scanner.next(); // clear invalid input
+            }
+        }
+
+        // --- Regular input for Sour Patch and Chocolate ---
+        System.out.print("Enter quantity of Sour Patch Kids: ");
+        int qtySourpatch = scanner.nextInt();
+
+        System.out.print("Enter pounds of Chocolate: ");
+        double lbsChocolate = scanner.nextDouble();
+
+        // --- Calculate item costs ---
+        double costSourpatch = qtySourpatch * PRICE_SOURPATCH;
+        double costSwedishfish = qtySwedishfish * PRICE_SWEDISHFISH;
+        double costChocolate = lbsChocolate * PRICE_CHOCOLATE_PER_LB;
+
+        double subtotal = costSourpatch + costSwedishfish + costChocolate;
+
+        // --- Option 3: Every 5th Sour Patch = $1.00 off ---
+        double promoSavings = 0.0;
+        for (int i = 1; i <= qtySourpatch; i++) {
+            if (i % 5 == 0) { // every 5th item gives $1 off
+                promoSavings += 1.00;
+            }
+        }
+
+        subtotal -= promoSavings;
+
+        // --- Calculate Tax and Totals ---
+        double tax = subtotal * SALES_TAX_RATE;
+        double totalBeforeDiscount = subtotal + tax;
+
+        // --- Optional Tiered Discount (after tax) ---
+        double discountRate = 0.0;
+        if (totalBeforeDiscount >= 45) {
+            discountRate = 0.20; // 20% off
+        } else if (totalBeforeDiscount >= 25) {
+            discountRate = 0.10; // 10% off
+        }
+
+        double discountAmount = totalBeforeDiscount * discountRate;
+        double totalAfterDiscount = totalBeforeDiscount - discountAmount;
+
+        // --- Rounding ---
+        subtotal = Math.round(subtotal * 100.0) / 100.0;
+        tax = Math.round(tax * 100.0) / 100.0;
+        totalBeforeDiscount = Math.round(totalBeforeDiscount * 100.0) / 100.0;
+        discountAmount = Math.round(discountAmount * 100.0) / 100.0;
+        totalAfterDiscount = Math.round(totalAfterDiscount * 100.0) / 100.0;
+        promoSavings = Math.round(promoSavings * 100.0) / 100.0;
+
+        // --- Print Receipt ---
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+
+        System.out.println("===================================");
+        System.out.println("       John's Store Receipt        ");
+        System.out.println("       Date: " + dtf.format(now));
+        System.out.println("       Location: Parlin, NJ");
+        System.out.println("===================================");
+
+        System.out.printf("Sour Patch Kids: %d x $%.2f = $%.2f%n", qtySourpatch, PRICE_SOURPATCH, costSourpatch);
+        System.out.printf("Swedish Fish:    %d x $%.2f = $%.2f%n", qtySwedishfish, PRICE_SWEDISHFISH, costSwedishfish);
+        System.out.printf("Chocolate:       %.2f lbs x $%.2f = $%.2f%n", lbsChocolate, PRICE_CHOCOLATE_PER_LB, costChocolate);
+        System.out.println("-----------------------------------");
+
+        if (promoSavings > 0) {
+            System.out.printf("Promo Savings (Every 5th Sour Patch): -$%.2f%n", promoSavings);
+        }
+
+        System.out.printf("Subtotal:               $%.2f%n", subtotal);
+        System.out.printf("Sales Tax (5.999%%):     $%.2f%n", tax);
+        System.out.printf("Total before discount:  $%.2f%n", totalBeforeDiscount);
+
+        if (discountRate > 0) {
+            System.out.printf("Discount (%.0f%%):         -$%.2f%n", discountRate * 100, discountAmount);
+        }
+
+        System.out.printf("Total after discount:   $%.2f%n", totalAfterDiscount);
+        System.out.println("===================================");
+        System.out.println("Thank you for shopping with us!");
+
+        scanner.close();
+    }
+}
