@@ -1,0 +1,44 @@
+import java.util.Scanner;
+public class SimplePalindrome {
+   public static void main(String[] args) {
+       Scanner input = new Scanner(System.in);
+       // 1️⃣ Prompt user for a line of text
+       System.out.print("Enter a line of text: ");
+       String text = input.nextLine();
+       // 2️⃣ Clean the text (letters only, lowercase) using a for loop
+       String cleaned = "";
+       for (int i = 0; i < text.length(); i++) {
+           char c = text.charAt(i);
+           if (Character.isLetter(c)) {
+               cleaned += Character.toLowerCase(c);
+           }
+       }
+       // 3️⃣ Reverse the cleaned text using a while loop
+       String reversed = "";
+       int j = cleaned.length() - 1;
+       while (j >= 0) {
+           reversed += cleaned.charAt(j);
+           j--;
+       }
+       // 4️⃣ Check if palindrome
+       boolean isPalindrome = cleaned.equals(reversed);
+       // 5️⃣ Output results
+       System.out.println("\nCleaned text: " + cleaned);
+       System.out.println("Palindrome? " + isPalindrome);
+       // 6️⃣ Numeric palindrome (using digit math)
+       System.out.print("\nEnter an integer: ");
+       int num = input.nextInt();
+       int original = num;
+       if (num < 0) num = -num; // handle negatives
+       int reversedNum = 0;
+       int temp = num;
+       while (temp > 0) {
+           int digit = temp % 10;
+           reversedNum = reversedNum * 10 + digit;
+           temp /= 10;
+       }
+       boolean isNumPalindrome = (num == reversedNum);
+       System.out.println("Numeric palindrome? " + isNumPalindrome);
+       input.close();
+   }
+}
