@@ -1,0 +1,65 @@
+import java.util.*;
+import java.io.*;
+
+public class PalindromeChecker {
+
+    // 1. Palindrome Check Function
+    public static boolean isPalindrome(String input) {
+        // Remove non-alphanumeric characters and convert to lowercase
+        String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        
+        // Compare cleaned string to its reverse
+        String reversed = new StringBuilder(cleaned).reverse().toString();
+        return cleaned.equals(reversed);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<String> palindromes = new ArrayList<>();
+        int totalCharacters = 0;
+
+        System.out.println("Enter strings to check for palindrome (type 'exit' to quit):");
+
+        while (true) {
+            System.out.print("\nEnter a string: ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("exit")) {
+                break;
+            }
+
+            totalCharacters += input.length();
+
+            if (isPalindrome(input)) {
+                System.out.println("✅ \"" + input + "\" is a palindrome!");
+                palindromes.add(input);
+            } else {
+                System.out.println("❌ \"" + input + "\" is not a palindrome.");
+            }
+        }
+
+        // 3. Statistics and Output
+        System.out.println("\n=== Statistics ===");
+        System.out.println("Total characters entered: " + totalCharacters);
+        System.out.println("Number of palindromes found: " + palindromes.size());
+
+        if (palindromes.isEmpty()) {
+            System.out.println("No palindromes were entered.");
+        } else {
+            System.out.println("Palindromes entered: " + palindromes);
+        }
+
+        // 4. Optional Feature: Save palindromes to a text file
+        if (!palindromes.isEmpty()) {
+            try (PrintWriter writer = new PrintWriter(new FileWriter("palindromes.txt"))) {
+                for (String p : palindromes) {
+                    writer.println(p);
+                }
+                System.out.println("\nPalindromes saved to palindromes.txt ✅");
+            } catch (IOException e) {
+                System.out.println("Error writing to file: " + e.getMessage());
+            }
+        }
+
+        scanner.close();
+    }
