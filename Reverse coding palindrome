@@ -1,0 +1,149 @@
+import java.util.Scanner;
+
+public class PalindromeAssignment {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("=== PALINDROME ASSIGNMENT ===");
+
+        // ===============================
+        // 1️⃣ STRING PALINDROME
+        // ===============================
+        System.out.print("Enter a word or phrase: ");
+        String text = input.nextLine();
+
+        // --- Clean input using FOR loop (letter by letter) ---
+        char[] chars = text.toCharArray();
+        String cleaned = ""; // start with empty string
+        for (int i = 0; i < chars.length; i++) {
+            char c = Character.toLowerCase(chars[i]); // convert to lowercase
+            // keep only letters (ignore spaces/punctuation)
+            if (Character.isLetter(c)) {
+                cleaned += c;
+            }
+        }
+
+        // --- Reverse cleaned string using WHILE loop ---
+        int index = cleaned.length() - 1; // start from last character
+        String reversed = ""; // empty string for reversed version
+        while (index >= 0) {
+            reversed += cleaned.charAt(index); // append character at index
+            index--; // move backward
+        }
+
+        // --- Compare cleaned and reversed strings ---
+        boolean isPalindrome = cleaned.equals(reversed);
+
+        System.out.println("\nCleaned: " + cleaned);
+        System.out.println("Reversed: " + reversed);
+        System.out.println("String Palindrome? " + isPalindrome);
+
+        // ===============================
+        // 2️⃣ NUMERIC PALINDROME
+        // ===============================
+        System.out.print("\nEnter an integer: ");
+        int num = input.nextInt();
+        int original = num;
+        if (num < 0) num = -num; // handle negatives
+
+        // --- Reverse the number using while loop and digit math ---
+        int reversedNum = 0;
+        int temp = num;
+        while (temp > 0) {
+            int digit = temp % 10;               // get last digit
+            reversedNum = reversedNum * 10 + digit; // append digit to reversed number
+            temp /= 10;                          // remove last digit
+        }
+
+        boolean isNumPalindrome = (num == reversedNum);
+
+        System.out.println("Reversed Number: " + reversedNum);
+        System.out.println("Numeric Palindrome? " + isNumPalindrome);
+
+        // ===============================
+        // 3️⃣ NEAR-PALINDROME (≤1 deletion)
+        // ===============================
+        input.nextLine(); // clear buffer
+        System.out.print("\nEnter a near-palindrome word: ");
+        String near = input.nextLine().toLowerCase();
+
+        int left = 0;
+        int right = near.length() - 1;
+        int skips = 0;
+        boolean nearPalindrome = true;
+
+        // --- Two-pointer while loop to allow one mismatch/deletion ---
+        while (left < right) {
+            if (near.charAt(left) != near.charAt(right)) {
+                skips++; // count mismatch
+                if (skips > 1) {
+                    nearPalindrome = false; // more than one deletion needed
+                    break;
+                }
+                // Try skipping left or right character
+                if (left + 1 <= right && near.charAt(left + 1) == near.charAt(right)) {
+                    left++;
+                } else if (right - 1 >= left && near.charAt(left) == near.charAt(right - 1)) {
+                    right--;
+                } else {
+                    nearPalindrome = false;
+                    break;
+                }
+            }
+            left++;
+            right--;
+        }
+
+        System.out.println("Near-Palindrome (≤1 deletion)? " + nearPalindrome);
+
+        // ===============================
+        // 4️⃣ LONGEST PALINDROMIC SUBSTRING (center expand)
+        // ===============================
+        System.out.print("\nEnter a string for LPS: ");
+        String lpsInput = input.nextLine().toLowerCase();
+
+        int start = 0;
+        int maxLen = 1;
+
+        // --- Expand around centers using FOR + WHILE loops ---
+        for (int i = 0; i < lpsInput.length(); i++) {
+            // Odd-length palindrome
+            int leftO = i, rightO = i;
+            while (leftO >= 0 && rightO < lpsInput.length()
+                    && lpsInput.charAt(leftO) == lpsInput.charAt(rightO)) {
+                if (rightO - leftO + 1 > maxLen) {
+                    start = leftO;
+                    maxLen = rightO - leftO + 1;
+                }
+                leftO--;
+                rightO++;
+            }
+
+            // Even-length palindrome
+            int leftE = i, rightE = i + 1;
+            while (leftE >= 0 && rightE < lpsInput.length()
+                    && lpsInput.charAt(leftE) == lpsInput.charAt(rightE)) {
+                if (rightE - leftE + 1 > maxLen) {
+                    start = leftE;
+                    maxLen = rightE - leftE + 1;
+                }
+                leftE--;
+                rightE++;
+            }
+        }
+
+        String longest = lpsInput.substring(start, start + maxLen);
+        System.out.println("Longest Palindromic Substring: \"" + longest + "\" (length " + maxLen + ")");
+
+        // ===============================
+        // 5️⃣ SUMMARY OUTPUT
+        // ===============================
+        System.out.println("\n========= SUMMARY =========");
+        System.out.println("String palindrome? " + isPalindrome);
+        System.out.println("Numeric palindrome? " + isNumPalindrome);
+        System.out.println("Near-palindrome? " + nearPalindrome);
+        System.out.println("Longest Palindromic Substring: " + longest);
+
+        input.close();
+    }
+}
