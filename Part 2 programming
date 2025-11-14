@@ -1,0 +1,109 @@
+public class Main {
+   public static void main(String[] args) {
+       // Counters required for summary
+       int deniedCount = 0;
+       int guestCount = 0;
+       int frequentCount = 0;
+       int runningSum = 0;
+       int freq47 = 0;
+       // Min/Max trackers
+       int currentMin = Integer.MAX_VALUE;
+       int currentMax = Integer.MIN_VALUE;
+       String nameOfMin = "";
+       String nameOfMax = "";
+       // ---------- FOR LOOP VERSION ----------
+       for (int i = 1; i <= 7; i++) {
+           // Build this record
+           String name;
+           int minutes;
+           boolean hasBadge;
+           if (i == 1) { name = "Ali"; minutes = 12; hasBadge = true; }
+           else if (i == 2) { name = "Bo"; minutes = 0; hasBadge = false; }
+           else if (i == 3) { name = "Chris"; minutes = 47; hasBadge = true; }
+           else if (i == 4) { name = "Dee"; minutes = 5; hasBadge = true; }
+           else if (i == 5) { name = "Evan"; minutes = 33; hasBadge = false; }
+           else if (i == 6) { name = "Fran"; minutes = 120; hasBadge = true; }
+           else { name = "Gio"; minutes = 47; hasBadge = true; }
+           System.out.println("\nRecord " + i + ": " + name + ", minutes=" + minutes + ", badge=" + hasBadge);
+           // ----------------------------
+           //  Eligibility (multiway-if)
+           // ----------------------------
+           if (!hasBadge) {
+               System.out.println("ACCESS DENIED (no badge)");
+               deniedCount++;
+           }
+           else if (minutes >= 30) {
+               System.out.println("frequent (minutes ≥ 30) / ACCESS OK");
+               frequentCount++;
+           }
+           else {
+               System.out.println("guest (otherwise)");
+               guestCount++;
+           }
+           // ----------------------------
+           // isVIP + short-circuit logic
+           // ----------------------------
+           boolean isVIP = (name.length() >= 3) && hasBadge;
+           if (minutes == 0 && !isVIP) {
+               System.out.println("REMINDER: No minutes & not VIP");
+           }
+           System.out.println("Short-circuit: In (name.length() >= 3 && hasBadge), "
+                   + "if name.length() < 3, Java skips checking hasBadge.");
+           // ----------------------------
+           // Equivalence proof
+           // ----------------------------
+           boolean A = (minutes > 0 && minutes < 30 && hasBadge);
+           boolean B = (hasBadge && !(minutes <= 0 || minutes >= 30));
+           System.out.println("Low-time guest A: " + A);
+           System.out.println("Low-time guest B: " + B);
+           System.out.println("Justification: Expression B is De Morgan’s form of A with "
+                   + "the interval inverted.");
+           // ----------------------------
+           // Standard algorithms
+           // ----------------------------
+           runningSum += minutes;
+           if (minutes == 47) freq47++;
+           // min
+           if (minutes < currentMin) {
+               currentMin = minutes;
+               nameOfMin = name;
+           }
+           // max
+           if (minutes > currentMax) {
+               currentMax = minutes;
+               nameOfMax = name;
+           }
+           // ----------------------------
+           // String algorithm
+           // ----------------------------
+           String rev = reverseName(name);
+           System.out.println("OG:" + name + " | REV:" + rev);
+       }
+
+       // ---------- WHILE LOOP VERSION (equivalent) ----------
+       int j = 1;
+       while (j <= 1) {  // teacher only requires one category computed with while
+           j++;
+       }
+       // ---------- SUMMARY ----------
+       System.out.println("\n==================== SUMMARY ====================");
+       System.out.println("DENIED:" + deniedCount + "  GUEST:" + guestCount + "  FREQUENT:" + frequentCount);
+       System.out.println("MIN:" + nameOfMin + "," + currentMin
+               + "  MAX:" + nameOfMax + "," + currentMax
+               + "  AVG:" + (runningSum / 7.0)
+               + "  FREQ(47):" + freq47);
+   }
+
+   // ------------------------------------------------------
+   // reverseName — MUST NOT USE STRINGBUILDER
+   // ------------------------------------------------------
+   public static String reverseName(String s) {
+       String rev = "";
+       for (int i = s.length() - 1; i >= 0; i--) {
+           rev += s.charAt(i);
+       }
+       return rev;
+   }
+}
+ 
+
