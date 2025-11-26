@@ -1,0 +1,209 @@
+import java.util.Scanner;
+
+class Main {
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+
+        int correctPin = 5920;
+        int attempts = 0;
+        boolean loginIn = false;
+
+        // Account balances
+        // need Ai
+        double checkingBalance = 0.0;
+        double savingsBalance = 0.0;
+
+ 
+        //  PIN LOGIN TRYS
+        while (attempts < 3 && !loginIn) {
+
+            System.out.println("Please Enter 4 digit PIN:");
+            int enterPin = input.nextInt();
+
+            if (enterPin == correctPin) {
+                System.out.println("Successfully logged in\n");
+                loginIn = true;
+            } else {
+                attempts++;
+                System.out.println("Incorrect PIN. Attempts left: " + (3 - attempts));
+            }
+        }
+
+        if (!loginIn) {
+            System.out.println("Account locked due to too many incorrect attempts.");
+            return;
+        }
+
+        // MENU LOOP
+        int choice;
+
+        while (loginIn) {
+
+            System.out.println("   MENU   ");
+            System.out.println("1) Deposit");
+            System.out.println("2) Withdraw");
+            System.out.println("3) Transfer");
+            System.out.println("4) Simulate monthly interest (savings)");
+            System.out.println("5) Show balances");
+            System.out.println("6) Exit");
+            System.out.print("Choose 1-6: ");
+
+            choice = input.nextInt();
+
+            if (choice < 1 || choice > 6) {
+                System.out.println("Invalid menu option. Try again.\n");
+                continue;
+            }
+            // needed Ai
+            switch (choice) {
+
+                // CASE 1: Deposit
+                case 1:
+                    System.out.println("\nDeposit selected.");
+                    System.out.println("1) Checking");
+                    System.out.println("2) Savings");
+                    System.out.print("Choose account (1 or 2): ");
+                    int acct = input.nextInt();
+
+                    if (acct != 1 && acct != 2) {
+                        System.out.println("Invalid account choice!\n");
+                        break;
+                    }
+
+                    System.out.print("Enter deposit amount: ");
+                    double amount = input.nextDouble();
+
+                    if (amount <= 0) {
+                        System.out.println("Invalid amount.\n");
+                        break;
+                    }
+
+                    if (acct == 1) {
+                        checkingBalance += amount;
+                        System.out.println("Deposited $" + amount + " into CHECKING.\n");
+                    } else {
+                        savingsBalance += amount;
+                        System.out.println("Deposited $" + amount + " into SAVINGS.\n");
+                    }
+                    break;
+
+                // CASE 2: Withdraw
+                case 2:
+                    System.out.println("\nWithdraw selected.");
+                    System.out.println("1) Checking");
+                    System.out.println("2) Savings");
+                    System.out.print("Choose account (1 or 2): ");
+                    int wAcct = input.nextInt();
+
+                    if (wAcct != 1 && wAcct != 2) {
+                        System.out.println("Invalid account choice!\n");
+                        break;
+                    }
+
+                    System.out.print("Enter withdrawal amount: ");
+                    double wAmount = input.nextDouble();
+
+                    if (wAmount <= 0) {
+                        System.out.println("Invalid amount.\n");
+                        break;
+                    }
+
+                    if (wAcct == 1) {
+                        if (wAmount > checkingBalance) {
+                            System.out.println("Insufficient funds in CHECKING.\n");
+                        } else {
+                            checkingBalance -= wAmount;
+                            System.out.println("Withdrew $" + wAmount + " from CHECKING.\n");
+                        }
+                    } else {
+                        if (wAmount > savingsBalance) {
+                            System.out.println("Insufficient funds in SAVINGS.\n");
+                        } else {
+                            savingsBalance -= wAmount;
+                            System.out.println("Withdrew $" + wAmount + " from SAVINGS.\n");
+                        }
+                    }
+                    break;
+
+                // CASE 3: Transfer
+ 
+                case 3:
+                    System.out.println("\nTransfer selected.");
+                    System.out.println("1) Checking to Savings");
+                    System.out.println("2) Savings to Checking");
+                    System.out.print("Choose transfer direction (1 or 2): ");
+                    int tChoice = input.nextInt();
+
+                    if (tChoice != 1 && tChoice != 2) {
+                        System.out.println("Invalid transfer option!\n");
+                        break;
+                    }
+
+                    System.out.print("Enter transfer amount: ");
+                    double tAmount = input.nextDouble();
+
+                    if (tAmount <= 0) {
+                        System.out.println("Invalid amount.\n");
+                        break;
+                    }
+
+                    if (tChoice == 1) {
+                        if (tAmount > checkingBalance) {
+                            System.out.println("Insufficient funds in CHECKING.\n");
+                        } else {
+                            checkingBalance -= tAmount;
+                            savingsBalance += tAmount;
+                            System.out.println("Transferred $" + tAmount + " from CHECKING to SAVINGS.\n");
+                        }
+                    } else {
+                        if (tAmount > savingsBalance) {
+                            System.out.println("Insufficient funds in SAVINGS.\n");
+                        } else {
+                            savingsBalance -= tAmount;
+                            checkingBalance += tAmount;
+                            System.out.println("Transferred $" + tAmount + " from SAVINGS to CHECKING.\n");
+                        }
+                    }
+                    break;
+
+                // CASE 4: Interest simulation
+                //need Ai
+                case 4:
+                    System.out.println("\nInterest Simulation Selected.");
+
+                    System.out.print("Enter annual interest rate (e.g., 4 for 4%): ");
+                    double annualRate = input.nextDouble();
+
+                    if (annualRate < 0) {
+                        System.out.println("Interest rate cannot be negative.\n");
+                        break;
+                    }
+
+                    double monthlyRate = (annualRate / 100) / 12;
+                    double interest = savingsBalance * monthlyRate;
+                    savingsBalance += interest;
+
+                    System.out.printf("Monthly interest added: $%.2f%n", interest);
+                    System.out.printf("New savings balance: $%.2f%n%n", savingsBalance);
+                    break;
+
+                // CASE 5: Show balances
+                case 5:
+                    System.out.println("\n--- BALANCES ---");
+                    System.out.println("Checking: $" + checkingBalance);
+                    System.out.println("Savings:  $" + savingsBalance + "\n");
+                    break;
+                
+                // CASE 6: Exit
+                case 6:
+                    System.out.println("Exiting...");
+                    loginIn = false;
+                    break;
+            }
+        }
+
+        input.close();
+    }
+}
+
